@@ -21,6 +21,17 @@ class TourViewController: UIViewController {
     }
 }
 
+extension TourViewController: HeaderCellProtocol{
+    func onExpandCollapseSelected(forSection: Int, isSelected: Bool) {
+        
+        for item in 0..<collectionDataArray.count {
+            if item == forSection {
+                collectionDataArray[item].isExpanded = isSelected
+            }
+        }
+        tourCollectionView.reloadData()
+    }
+}
 
 extension TourViewController : UICollectionViewDataSource{
     
@@ -37,7 +48,18 @@ extension TourViewController : UICollectionViewDataSource{
             return 0
         }
      }
-    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            return UICollectionReusableView()
+        }
+        let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "tourHeader", for: indexPath) as! TourCollectionReusableView
+        headerCell.currentSection = indexPath.section
+        headerCell.delegate = self
+        headerCell.sectionData = collectionDataArray[indexPath.section]
+        headerCell.headerLbl.text = collectionDataArray[indexPath.section].placeName
+        return headerCell
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 50)
     }
@@ -52,7 +74,7 @@ extension TourViewController : UICollectionViewDataSource{
 extension TourViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row + 1)
+        print(indexPath.row)
     }
 }
 

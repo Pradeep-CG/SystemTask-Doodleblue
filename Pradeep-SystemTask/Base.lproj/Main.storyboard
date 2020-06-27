@@ -83,12 +83,12 @@
                                         <color key="tintColor" red="0.98294443679999999" green="0.77522007250000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <size key="customSize" width="120" height="132"/>
                                         <connections>
-                                            <outlet property="tourImage" destination="6lB-Hh-XRH" id="Xyy-5J-q0Q"/>
+                                            <outlet property="tourImage" destination="6lB-Hh-XRH" id="duk-Wr-LU0"/>
                                             <outlet property="tourTitle" destination="vHZ-mQ-EtI" id="isN-Y6-Z2w"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="doodleHeader" id="gMu-ai-81L" customClass="DoodleHeader" customModule="doodleTest" customModuleProvider="target">
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="tourHeader" id="gMu-ai-81L" customClass="TourCollectionReusableView" customModule="Pradeep_SystemTask" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
@@ -118,6 +118,9 @@
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ugW-vC-whO">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                            <connections>
+                                                <action selector="onHeaderButtonClicked:" destination="gMu-ai-81L" eventType="touchUpInside" id="REy-wG-1Gy"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" red="0.32974122709999998" green="0.72666771379999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -136,6 +139,10 @@
                                         <constraint firstAttribute="bottom" secondItem="SJ5-s7-C7C" secondAttribute="bottom" id="vYS-ss-edf"/>
                                         <constraint firstAttribute="bottom" secondItem="ugW-vC-whO" secondAttribute="bottom" id="vfv-Um-0ap"/>
                                     </constraints>
+                                    <connections>
+                                        <outlet property="expandImageView" destination="lwv-ms-ebE" id="Dpb-7H-RAz"/>
+                                        <outlet property="headerLbl" destination="SJ5-s7-C7C" id="QYJ-y1-Krh"/>
+                                    </connections>
                                 </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="qAl-n3-uxM" id="0GX-z7-1bm"/>

@@ -12,12 +12,38 @@ class TourViewController: UIViewController {
 
     @IBOutlet weak var tourCollectionView: UICollectionView!
     var collectionDataArray:[CollectionModel] = PlaceModel.getPlaceModel()
+    var arrSelectedIndex = [IndexPath]() // This is selected cell Index array
+    var isLongPressEnabled = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.navigationItem.title = "Tourist Place In India"
        
+        let longPressedGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
+        longPressedGesture.minimumPressDuration = 0.5
+        longPressedGesture.delegate = self as? UIGestureRecognizerDelegate
+        longPressedGesture.delaysTouchesBegan = true
+        tourCollectionView?.addGestureRecognizer(longPressedGesture)
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    @objc func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+        if (gestureRecognizer.state != .began) {
+            return
+        }
+        isLongPressEnabled = true
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        tourCollectionView.reloadData()
+    }
+    @objc func cancelTapped()  {
+        isLongPressEnabled = false
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        arrSelectedIndex.removeAll()
+        tourCollectionView.reloadData()
     }
 }
 
@@ -57,15 +83,35 @@ extension TourViewController : UICollectionViewDataSource{
         headerCell.currentSection = indexPath.section
         headerCell.delegate = self
         headerCell.sectionData = collectionDataArray[indexPath.section]
-        headerCell.headerLbl.text = collectionDataArray[indexPath.section].placeName
+        headerCell.headerLbl.text = collectionDataArray[indexPath.section].placeName?.uppercased()
         return headerCell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 50)
     }
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tourCell", for: indexPath) as! TourCollectionViewCell
+        
         cell.rowData = collectionDataArray[indexPath.section].row?[indexPath.row]
+        
+        if isLongPressEnabled {
+            
+            cell.checkImage.isHidden = false
+            
+            if arrSelectedIndex.contains(indexPath) {
+                cell.layer.borderWidth = 3.0
+                cell.checkImage.image = UIImage(systemName: "checkmark.circle.fill")
+            }
+            else {
+                cell.layer.borderWidth = 1.0
+                cell.checkImage.image = UIImage(systemName: "circle.fill")
+            }
+        }
+        else{
+            cell.checkImage.isHidden = true
+            cell.layer.borderWidth = 1.0
+        }
          
          return cell
      }
@@ -75,7 +121,34 @@ extension TourViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
+        
+        if arrSelectedIndex.contains(indexPath) {
+            arrSelectedIndex = arrSelectedIndex.filter { $0 != indexPath}
+        }
+        else {
+            arrSelectedIndex.append(indexPath)
+        }
+
+        tourCollectionView.reloadData()
     }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? TourCollectionViewCell {
+            cell.layer.borderColor = UIColor.blue.cgColor
+            cell.layer.borderWidth = 0.3
+        }
+    }
+//    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+//        if let cell = collectionView.cellForItem(at: indexPath) {
+//            cell.contentView.backgroundColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
+//        }
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+//        if let cell = collectionView.cellForItem(at: indexPath) {
+//            cell.contentView.backgroundColor = nil
+//        }
+//    }
 }
 
 extension TourViewController: UICollectionViewDelegateFlowLayout {

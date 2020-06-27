@@ -14,6 +14,7 @@
 		274F3F2F24A7128E00C21F4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 274F3F2D24A7128E00C21F4E /* LaunchScreen.storyboard */; };
 		274F3F3A24A7143200C21F4E /* TourViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274F3F3924A7143200C21F4E /* TourViewController.swift */; };
 		274F3F3C24A71A1000C21F4E /* CollectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274F3F3B24A71A1000C21F4E /* CollectionModel.swift */; };
+		274F3F3E24A71C5100C21F4E /* TourCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274F3F3D24A71C5100C21F4E /* TourCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		274F3F3024A7128E00C21F4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		274F3F3924A7143200C21F4E /* TourViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourViewController.swift; sourceTree = "<group>"; };
 		274F3F3B24A71A1000C21F4E /* CollectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionModel.swift; sourceTree = "<group>"; };
+		274F3F3D24A71C5100C21F4E /* TourCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 		274F3F3624A713E900C21F4E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				274F3F3D24A71C5100C21F4E /* TourCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 				274F3F2324A7128900C21F4E /* AppDelegate.swift in Sources */,
 				274F3F3C24A71A1000C21F4E /* CollectionModel.swift in Sources */,
 				274F3F3A24A7143200C21F4E /* TourViewController.swift in Sources */,
+				274F3F3E24A71C5100C21F4E /* TourCollectionViewCell.swift in Sources */,
 				274F3F2524A7128900C21F4E /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

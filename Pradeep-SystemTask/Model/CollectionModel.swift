@@ -17,6 +17,7 @@ struct CollectionModel {
 
 struct RowModel {
     var title:String?
+    var isSelected:Bool?
 }
 
 
@@ -50,7 +51,7 @@ struct PlaceModel {
         var delhiArr = [RowModel]()
         
         for item in delhi {
-            delhiArr.append(RowModel(title: item))
+            delhiArr.append(RowModel(title: item, isSelected: false))
         }
         return delhiArr
     }
@@ -59,7 +60,7 @@ struct PlaceModel {
         var goaArr = [RowModel]()
         
         for item in goa {
-            goaArr.append(RowModel(title: item))
+            goaArr.append(RowModel(title: item, isSelected: false))
         }
         return goaArr
     }
@@ -68,7 +69,7 @@ struct PlaceModel {
         var kasmirArr = [RowModel]()
         
         for item in kasmir {
-            kasmirArr.append(RowModel(title: item))
+            kasmirArr.append(RowModel(title: item, isSelected: false))
         }
         return kasmirArr
     }
@@ -77,7 +78,7 @@ struct PlaceModel {
         var maharastraArr = [RowModel]()
         
         for item in maharastra {
-            maharastraArr.append(RowModel(title: item))
+            maharastraArr.append(RowModel(title: item, isSelected: false))
         }
         return maharastraArr
     }
@@ -86,7 +87,7 @@ struct PlaceModel {
         var mysoreArr = [RowModel]()
         
         for item in mysore {
-            mysoreArr.append(RowModel(title: item))
+            mysoreArr.append(RowModel(title: item, isSelected: false))
         }
         return mysoreArr
     }

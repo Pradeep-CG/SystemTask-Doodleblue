@@ -12,7 +12,6 @@ class TourViewController: UIViewController {
 
     @IBOutlet weak var tourCollectionView: UICollectionView!
     var collectionDataArray:[CollectionModel] = PlaceModel.getPlaceModel()
-    var arrSelectedIndex = [IndexPath]() // This is selected cell Index array
     var isLongPressEnabled = false
     
     override func viewDidLoad() {
@@ -21,7 +20,7 @@ class TourViewController: UIViewController {
         self.navigationItem.title = "Tourist Place In India"
        
         let longPressedGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
-        longPressedGesture.minimumPressDuration = 0.5
+        longPressedGesture.minimumPressDuration = 0.7
         longPressedGesture.delegate = self as? UIGestureRecognizerDelegate
         longPressedGesture.delaysTouchesBegan = true
         tourCollectionView?.addGestureRecognizer(longPressedGesture)
@@ -35,15 +34,33 @@ class TourViewController: UIViewController {
         if (gestureRecognizer.state != .began) {
             return
         }
-        isLongPressEnabled = true
-        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        if isLongPressEnabled {
+            isLongPressEnabled = false
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            resetIsSelectedProperty()
+        }
+        else{
+            isLongPressEnabled = true
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        }
+        
         tourCollectionView.reloadData()
     }
     @objc func cancelTapped()  {
         isLongPressEnabled = false
+        resetIsSelectedProperty()
         self.navigationItem.rightBarButtonItem?.isEnabled = false
-        arrSelectedIndex.removeAll()
         tourCollectionView.reloadData()
+    }
+    
+    func resetIsSelectedProperty() {
+        
+        for sectionIndex in 0..<collectionDataArray.count {
+            let rowCount:Int = collectionDataArray[sectionIndex].row?.count ?? 0
+            for rowIndex in 0..<rowCount {
+                collectionDataArray[sectionIndex].row?[rowIndex].isSelected = false
+            }
+        }
     }
 }
 
@@ -99,7 +116,7 @@ extension TourViewController : UICollectionViewDataSource{
             
             cell.checkImage.isHidden = false
             
-            if arrSelectedIndex.contains(indexPath) {
+            if (collectionDataArray[indexPath.section].row?[indexPath.row].isSelected)! {
                 cell.layer.borderWidth = 3.0
                 cell.checkImage.image = UIImage(systemName: "checkmark.circle.fill")
             }
@@ -122,14 +139,32 @@ extension TourViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
         
-        if arrSelectedIndex.contains(indexPath) {
-            arrSelectedIndex = arrSelectedIndex.filter { $0 != indexPath}
+        if isLongPressEnabled {
+            if (collectionDataArray[indexPath.section].row?[indexPath.row].isSelected)! {
+                collectionDataArray[indexPath.section].row?[indexPath.row].isSelected = false
+            }
+            else{
+                collectionDataArray[indexPath.section].row?[indexPath.row].isSelected = true
+            }
+            self.tourCollectionView.reloadData()
         }
-        else {
-            arrSelectedIndex.append(indexPath)
+        else{
+            if let cell = collectionView.cellForItem(at: indexPath) as? TourCollectionViewCell {
+                cell.layer.borderColor = UIColor.blue.cgColor
+                cell.layer.borderWidth = 3.0
+                cell.checkImage.isHidden = false
+                cell.checkImage.image = UIImage(systemName: "checkmark.circle.fill")
+                
+                let seconds = 0.7
+                DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+                    self.collectionDataArray[indexPath.section].isExpanded = false
+                    cell.layer.borderWidth = 1.0
+                    cell.checkImage.isHidden = true
+                    cell.checkImage.image = UIImage(systemName: "circle.fill")
+                    self.tourCollectionView.reloadData()
+                }
+            }
         }
-
-        tourCollectionView.reloadData()
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

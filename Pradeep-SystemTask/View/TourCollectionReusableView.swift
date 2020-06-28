@@ -13,7 +13,7 @@ protocol HeaderCellProtocol:class {
 }
 
 class TourCollectionReusableView: UICollectionReusableView {
-        
+    
     @IBOutlet weak var headerLbl: UILabel!
     @IBOutlet weak var expandImageView: UIImageView!
     

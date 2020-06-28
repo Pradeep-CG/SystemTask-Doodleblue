@@ -16,6 +16,8 @@
 		274F3F3C24A71A1000C21F4E /* CollectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274F3F3B24A71A1000C21F4E /* CollectionModel.swift */; };
 		274F3F3E24A71C5100C21F4E /* TourCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274F3F3D24A71C5100C21F4E /* TourCollectionViewCell.swift */; };
 		274F3F4024A7337500C21F4E /* TourCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274F3F3F24A7337500C21F4E /* TourCollectionReusableView.swift */; };
+		27CEEABD24A8BDE000C3EB1B /* PlacesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CEEABC24A8BDE000C3EB1B /* PlacesModel.swift */; };
+		27CEEAC024A8C05500C3EB1B /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CEEABF24A8C05500C3EB1B /* Common.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		274F3F3B24A71A1000C21F4E /* CollectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionModel.swift; sourceTree = "<group>"; };
 		274F3F3D24A71C5100C21F4E /* TourCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCollectionViewCell.swift; sourceTree = "<group>"; };
 		274F3F3F24A7337500C21F4E /* TourCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourCollectionReusableView.swift; sourceTree = "<group>"; };
+		27CEEABC24A8BDE000C3EB1B /* PlacesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesModel.swift; sourceTree = "<group>"; };
+		27CEEABF24A8C05500C3EB1B /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +66,7 @@
 		274F3F2124A7128900C21F4E /* Pradeep-SystemTask */ = {
 			isa = PBXGroup;
 			children = (
+				27CEEABE24A8C04C00C3EB1B /* Common */,
 				274F3F3824A713E900C21F4E /* Controller */,
 				274F3F3724A713E900C21F4E /* Model */,
 				274F3F3624A713E900C21F4E /* View */,
@@ -88,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				274F3F3B24A71A1000C21F4E /* CollectionModel.swift */,
+				27CEEABC24A8BDE000C3EB1B /* PlacesModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -98,6 +104,14 @@
 				274F3F3924A7143200C21F4E /* TourViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		27CEEABE24A8C04C00C3EB1B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				27CEEABF24A8C05500C3EB1B /* Common.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,8 +189,10 @@
 				274F3F3C24A71A1000C21F4E /* CollectionModel.swift in Sources */,
 				274F3F4024A7337500C21F4E /* TourCollectionReusableView.swift in Sources */,
 				274F3F3A24A7143200C21F4E /* TourViewController.swift in Sources */,
+				27CEEAC024A8C05500C3EB1B /* Common.swift in Sources */,
 				274F3F3E24A71C5100C21F4E /* TourCollectionViewCell.swift in Sources */,
 				274F3F2524A7128900C21F4E /* SceneDelegate.swift in Sources */,
+				27CEEABD24A8BDE000C3EB1B /* PlacesModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

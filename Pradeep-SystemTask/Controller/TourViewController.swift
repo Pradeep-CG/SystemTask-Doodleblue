@@ -9,16 +9,17 @@
 import UIKit
 
 class TourViewController: UIViewController {
-
+    
     @IBOutlet weak var tourCollectionView: UICollectionView!
-    var collectionDataArray:[CollectionModel] = PlaceModel.getPlaceModel()
+    var collectionDataArray:[CollectionModel] = Common.getPlaceModel()
     var isLongPressEnabled = false
+    var isSinglePressEnabled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        self.navigationItem.title = "Tourist Place In India"
-       
+        
+        self.navigationItem.title = "Tourist Places In India"
+        
         let longPressedGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
         longPressedGesture.minimumPressDuration = 0.7
         longPressedGesture.delegate = self as? UIGestureRecognizerDelegate
@@ -30,6 +31,11 @@ class TourViewController: UIViewController {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
+    /**
+     # Long Press:
+     * First Logn Press: This will allow user to select multple images in any section.
+     * Second Longe Press: This will discard all selected images in any section.
+     */
     @objc func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
         if (gestureRecognizer.state != .began) {
             return
@@ -37,7 +43,7 @@ class TourViewController: UIViewController {
         if isLongPressEnabled {
             isLongPressEnabled = false
             self.navigationItem.rightBarButtonItem?.isEnabled = false
-            resetIsSelectedProperty()
+            resetCollectionModel()
         }
         else{
             isLongPressEnabled = true
@@ -46,14 +52,21 @@ class TourViewController: UIViewController {
         
         tourCollectionView.reloadData()
     }
+    
+    /**
+     Call this function to reset image selection in all sections
+     */
     @objc func cancelTapped()  {
         isLongPressEnabled = false
-        resetIsSelectedProperty()
+        resetCollectionModel()
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         tourCollectionView.reloadData()
     }
     
-    func resetIsSelectedProperty() {
+    /**
+     Call this function to reset isSelected property of  RowModel
+     */
+    func resetCollectionModel() {
         
         for sectionIndex in 0..<collectionDataArray.count {
             let rowCount:Int = collectionDataArray[sectionIndex].row?.count ?? 0
@@ -64,7 +77,12 @@ class TourViewController: UIViewController {
     }
 }
 
+
 extension TourViewController: HeaderCellProtocol{
+    
+    /**
+     Expand/Collapse section upon selecting corresponding header
+     */
     func onExpandCollapseSelected(forSection: Int, isSelected: Bool) {
         
         for item in 0..<collectionDataArray.count {
@@ -81,8 +99,8 @@ extension TourViewController : UICollectionViewDataSource{
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return collectionDataArray.count
-     }
-     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionDataArray[section].isExpanded ?? true {
             return collectionDataArray[section].row?.count ?? 0
@@ -90,7 +108,7 @@ extension TourViewController : UICollectionViewDataSource{
         else{
             return 0
         }
-     }
+    }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         guard kind == UICollectionView.elementKindSectionHeader else {
@@ -106,9 +124,9 @@ extension TourViewController : UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 50)
     }
-     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tourCell", for: indexPath) as! TourCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tourCell", for: indexPath) as! TourCollectionViewCell
         
         cell.rowData = collectionDataArray[indexPath.section].row?[indexPath.row]
         
@@ -129,13 +147,14 @@ extension TourViewController : UICollectionViewDataSource{
             cell.checkImage.isHidden = true
             cell.layer.borderWidth = 1.0
         }
-         
-         return cell
-     }
+        
+        return cell
+    }
 }
 
+/// UITableViewDelegate conformance
 extension TourViewController: UICollectionViewDelegate {
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
         
@@ -149,55 +168,49 @@ extension TourViewController: UICollectionViewDelegate {
             self.tourCollectionView.reloadData()
         }
         else{
-            if let cell = collectionView.cellForItem(at: indexPath) as? TourCollectionViewCell {
-                cell.layer.borderColor = UIColor.blue.cgColor
-                cell.layer.borderWidth = 3.0
-                cell.checkImage.isHidden = false
-                cell.checkImage.image = UIImage(systemName: "checkmark.circle.fill")
+            if isSinglePressEnabled {
+                isSinglePressEnabled = false
                 
-                let seconds = 0.7
-                DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-                    self.collectionDataArray[indexPath.section].isExpanded = false
-                    cell.layer.borderWidth = 1.0
-                    cell.checkImage.isHidden = true
-                    cell.checkImage.image = UIImage(systemName: "circle.fill")
-                    self.tourCollectionView.reloadData()
+                if let cell = collectionView.cellForItem(at: indexPath) as? TourCollectionViewCell {
+                    cell.layer.borderColor = UIColor.blue.cgColor
+                    cell.layer.borderWidth = 3.0
+                    cell.checkImage.isHidden = false
+                    cell.checkImage.image = UIImage(systemName: "checkmark.circle.fill")
+                    
+                    let seconds = 0.7
+                    DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+                        self.collectionDataArray[indexPath.section].isExpanded = false
+                        cell.layer.borderWidth = 1.0
+                        cell.checkImage.isHidden = true
+                        cell.checkImage.image = UIImage(systemName: "circle.fill")
+                        self.isSinglePressEnabled = true
+                        self.tourCollectionView.reloadData()
+                    }
                 }
             }
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? TourCollectionViewCell {
             cell.layer.borderColor = UIColor.blue.cgColor
             cell.layer.borderWidth = 0.3
         }
     }
-//    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-//        if let cell = collectionView.cellForItem(at: indexPath) {
-//            cell.contentView.backgroundColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
-//        }
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-//        if let cell = collectionView.cellForItem(at: indexPath) {
-//            cell.contentView.backgroundColor = nil
-//        }
-//    }
 }
 
 extension TourViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-         return 4
-     }
-     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-         return 1
-     }
+        return 4
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (collectionView.frame.size.width - 20) / 3 , height: 130.0)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-       return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     }
 }

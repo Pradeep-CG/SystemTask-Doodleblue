@@ -18,11 +18,11 @@
 . iOS : 13.4.1
 
 ### Screenshots
-###### Section
+###### Collapsed Section
 ![img](https://i.imgur.com/q47jJqW.png)
 
 ###### Expanded Section
 ![img](https://i.imgur.com/fkp4oEW.png) 
 
-###### Cell Selection
+###### Cell Selection on Long Press
 ![img](https://i.imgur.com/S9YsDs2.png)
